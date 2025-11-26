@@ -33,15 +33,19 @@ class Course:
 
 class Enrollment:
     all = []
-    
+
     def __init__(self, student, course):
-        if isinstance(student, Student) and isinstance(course, Course):
-            self.student = student
-            self.course = course
-            self._enrollment_date = datetime.now()
-            type(self).all.append(self)
-        else:
+        if not isinstance(student, Student) or not isinstance(course, Course):
             raise TypeError("Invalid types for student and/or course")
+
+        self.student = student
+        self.course = course
+        self._enrollment_date = datetime.now()
+
+        type(self).all.append(self)
+
+        student._enrollments.append(self)
+        course._enrollments.append(self)
 
     def get_enrollment_date(self):
         return self._enrollment_date
